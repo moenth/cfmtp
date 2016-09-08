@@ -1,20 +1,27 @@
 package trade
 
 import (
-    "github.com/moenth/cfmtp/db"
-)
-
-const (
-    collection = "trades"
+	"github.com/moenth/cfmtp/db"
+	"gopkg.in/mgo.v2"
 )
 
 // Repository provides access to trades.
 type Repository struct {
-    *db.MgoDB
+	*db.MgoDB
 }
 
 // Store persists a trade in the database.
 func (r Repository) Store(t Trade) (err error) {
-    _, err = r.MgoDB.C(collection).UpsertId(t.ID, t)
-    return
+	_, err = r.col().UpsertId(t.ID, t)
+	return
+}
+
+// List returns a list of the last n trades.
+func (r Repository) List(n int) (trades []Trade, err error) {
+	err = r.col().Find(nil).Sort("-_id").Limit(n).All(&trades)
+	return
+}
+
+func (r Repository) col() *mgo.Collection {
+	return r.MgoDB.C("trades")
 }
