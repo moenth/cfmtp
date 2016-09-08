@@ -12,8 +12,8 @@ func ProcessTrade(t Trade) {
 	db.Init()
 	defer db.Close()
 
-    // Store the trade in the database
-    trades := Repository{&db}
+	// Store the trade in the database
+	trades := Repository{&db}
 	err := trades.Store(t)
 	if err != nil {
 		log.Println(err.Error())

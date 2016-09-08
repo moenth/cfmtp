@@ -9,7 +9,7 @@ import (
 
 // RateLimiter rate limits incoming API calls.
 // A distributed implementation could use something like redis
-// to store limits, but we'll keep it simple here.
+// to share limiter state, but we'll keep it simple here.
 // We also want to clean out old sessions periodically
 // to avoid memory leaks.
 type RateLimiter struct {
@@ -29,6 +29,15 @@ func (r RateLimiter) Serve(c *iris.Context) {
 	// Returns 429 too many requests if allowance limit is exceeded
 	log.Printf("Api key exceeded allowance: %s", key)
 	c.JSON(429, "API call allowance exceeded. Try again later.")
+}
+
+// Clean removes old sessions.
+func (r RateLimiter) Clean() {
+	for key, l := range r.Sessions {
+		if time.Since(l.lastCheck).Seconds() >= l.limit {
+			delete(r.Sessions, key)
+		}
+	}
 }
 
 // Allowed checks if the key has any allowances left.

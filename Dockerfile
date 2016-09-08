@@ -4,10 +4,14 @@ FROM golang:1.7
 # Copy local package files to the container's workspace.
 ADD . /go/src/github.com/moenth/cfmtp
 
+# Mount static assets
+ADD ./templates /templates
+
 # Build the app inside the container.
 RUN go install github.com/moenth/cfmtp
 
 # Run the cfmtp command when the container starts.
+WORKDIR /
 ENTRYPOINT /go/bin/cfmtp
 
 # Expose app on :8080.

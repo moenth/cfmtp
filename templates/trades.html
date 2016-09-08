@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>cfmtp</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+    <style>
+        html, body {
+            background-color: #f0f0f0;
+        }
+
+        #site-header {
+            margin-top: 3em
+        }
+
+        #trades {
+            margin-bottom: 6em
+        }
+    </style>
+</head>
+<body>
+    <main class="ui container">
+        <h1 id="site-header" class="ui dividing header">Trades</h1>
+        <div class="ui success message">
+            <div class="header">Good to see you!</div>
+            <div class="content">
+                We currently have a total of {{.Total}} trades.
+                The {{.Trades|len}} latest ones are displayed below.
+            </div>
+        </div>
+
+        <table id="trades" class="ui striped selectable table">
+            <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>Currency from</th>
+                    <th>Currency to</th>
+                    <th>Amount sell</th>
+                    <th>Amount buy</th>
+                    <th>Rate</th>
+                    <th>Time placed</th>
+                    <th>Originating country</th>
+                </tr>
+                <tbody>
+                    {{range .Trades}}
+                        <tr>
+                            <td>{{.UserID}}</td>
+                            <td>{{.CurrencyFrom}}</td>
+                            <td>{{.CurrencyTo}}</td>
+                            <td>{{.AmountSell}}</td>
+                            <td>{{.AmountBuy}}</td>
+                            <td>{{.Rate}}</td>
+                            <td>{{.TimePlaced}}</td>
+                            <td>{{.OriginatingCountry}}</td>
+                        </tr>
+                    {{end}}
+                </tbody>
+            </thead>
+        </table>
+    </main>
+</body>
+</html>

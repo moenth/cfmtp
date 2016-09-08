@@ -3,15 +3,18 @@ package main
 import (
 	"github.com/kataras/iris"
 	"github.com/moenth/cfmtp/db"
-	"github.com/moenth/cfmtp/trade"
 	"github.com/moenth/cfmtp/middleware"
+	"github.com/moenth/cfmtp/trade"
 )
 
 func main() {
+	iris.Config.IsDevelopment = true
+	// Get everything ready
 	initDB()
 	registerMiddleware()
-	registerAPI()
+	registerRoutes()
 
+	// Serve app on :8080
 	iris.Listen(":8080")
 }
 
@@ -31,7 +34,12 @@ func registerMiddleware() {
 	iris.Use(middleware.NewRateLimiter())
 }
 
-// registerAPI registers api routes with the router.
-func registerAPI() {
+// registerRoutes registers endpoints with the router.
+func registerRoutes() {
+
+	// Serve a basic frontend.
+	iris.Get("/trades", trade.Index)
+
+	// Register the trade api.
 	iris.API("/api/v1/trades", trade.API{})
 }

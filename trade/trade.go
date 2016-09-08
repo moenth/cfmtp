@@ -13,7 +13,7 @@ var currencies = []string{}
 
 // Trade contains information about a single market interaction.
 type Trade struct {
-	ID                 string         `json:"id" bson:"_id"`
+	ID                 string         `json:"-" bson:"_id"`
 	UserID             string         `json:"userId" bson:"user_id" valid:"int"`
 	CurrencyFrom       string         `json:"currencyFrom" bson:"currency_from"`
 	CurrencyTo         string         `json:"currencyTo" bson:"currency_to"`

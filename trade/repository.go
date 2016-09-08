@@ -22,6 +22,11 @@ func (r Repository) List(n int) (trades []Trade, err error) {
 	return
 }
 
+// Count returns the total number of trades.
+func (r Repository) Count() (n int, err error) {
+	return r.col().Count()
+}
+
 func (r Repository) col() *mgo.Collection {
 	return r.MgoDB.C("trades")
 }

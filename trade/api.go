@@ -19,7 +19,7 @@ func (api API) Get() {
 	db.Init()
 	defer db.Close()
 
-    trades := Repository{&db}
+	trades := Repository{&db}
 	recent, err := trades.List(20)
 	if err != nil {
 		api.JSON(500, err.Error())
@@ -53,4 +53,20 @@ func (api API) Post() {
 	go ProcessTrade(trade)
 	log.Printf("Received trade: %v", trade)
 	api.SetStatusCode(201)
+}
+
+// Index renders the trades index page.
+func Index(c *iris.Context) {
+	db := db.MgoDB{}
+	db.Init()
+	defer db.Close()
+
+	r := Repository{&db}
+	trades, _ := r.List(20)
+	total, _ := r.Count()
+
+	c.Render("trades.html", struct {
+		Trades []Trade
+		Total  int
+	}{trades, total})
 }
