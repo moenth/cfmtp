@@ -53,6 +53,29 @@ func (m *MgoDB) C(name string) *mgo.Collection {
     return m.Col
 }
 
+// DropDB drops the specified database.
+func (m *MgoDB) DropDB(name string) {
+	err := m.Session.DB(name).DropDatabase()
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+// Index ensures keys on the given collection are indexed.
+func (m *MgoDB) Index(collection string, keys []string) {
+	index := mgo.Index{
+		Key: keys,
+		Unique: true,
+		DropDups: true,
+		Background: true,
+	}
+
+	err := m.C(collection).EnsureIndex(index)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
 // Close closes the connection and returns it to the pool.
 func (m *MgoDB) Close() {
 	defer m.Session.Close()
