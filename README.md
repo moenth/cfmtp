@@ -30,7 +30,7 @@ sudo docker-compose up
 
 To run locally:
 ```
-go get -u github.com/moenth/cfmtp
+go get -ut github.com/moenth/cfmtp
 cd $GOPATH/src/github.com/moenth/cfmtp
 go build
 ./cfmtp
