@@ -52,11 +52,11 @@ func TestTradePost(t *testing.T) {
 		OriginatingCountry: "IE",
 	}
 
-	t.Log("POST /api/v1/trades, expecting status 201")
+	t.Log("POST /api/v1/trades, expecting status 201 Created")
 	e.POST("/api/v1/trades").WithJSON(trade).Expect().Status(iris.StatusCreated)
 
 	trade.AmountBuy = 5000
-	t.Log("POST /api/v1/trades, expecting status 422")
+	t.Log("POST /api/v1/trades, expecting status 422 Unprocessable Entity")
 	e.POST("/api/v1/trades").WithJSON(trade).Expect().Status(422)
 
 	m.C("trades").DropCollection()
@@ -69,5 +69,6 @@ func TestTradeIndex(t *testing.T) {
 	iris.Get("/trades", TradeIndex)
 	e := iris.Tester(t)
 
+    t.Log("Get /trades, expecting status 200 OK")
 	e.GET("/trades").Expect().Status(iris.StatusOK).ContentType("text/html")
 }

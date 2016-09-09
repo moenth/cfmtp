@@ -4,8 +4,8 @@ About
 Simple market trade processor written in Go. This project is powered by
 [Iris](https://github.com/kataras/iris/) and
 [MongoDB](https://www.mongodb.com/), and is largely focused on maximizing API
-performance. Even a low-powered server running cfmtp can be expected to
-process tens of thousands of requests per second.
+performance. Even a low-powered server running cfmtp can process thousands
+of requests per second.
 
 Requirements
 =====
@@ -17,7 +17,8 @@ with docker. Please make sure to have
 before proceeding.
 
 Alternatively the application may be run locally if you have working
-golang-1.7 and mongodb installation.
+golang-1.7 and mongodb installation. You will also need to add
+`127.0.0.1 db` to your hosts file to connect to the database.
 
 Usage
 =====
@@ -30,7 +31,7 @@ sudo docker-compose up
 
 To run locally:
 ```
-go get -ut github.com/moenth/cfmtp
+go get -u -t github.com/moenth/cfmtp
 cd $GOPATH/src/github.com/moenth/cfmtp
 go build
 ./cfmtp
