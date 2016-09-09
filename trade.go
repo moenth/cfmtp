@@ -2,8 +2,8 @@ package main
 
 import (
 	"errors"
-	"time"
 	"regexp"
+	"time"
 
 	"github.com/simplereach/timeutils"
 	"gopkg.in/mgo.v2/bson"

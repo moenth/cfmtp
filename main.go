@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	
+
 	// Get everything ready
 	initDB()
 	registerMiddleware()
