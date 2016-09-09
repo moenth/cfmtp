@@ -69,6 +69,6 @@ func TestTradeIndex(t *testing.T) {
 	iris.Get("/trades", TradeIndex)
 	e := iris.Tester(t)
 
-    t.Log("Get /trades, expecting status 200 OK")
+	t.Log("Get /trades, expecting status 200 OK")
 	e.GET("/trades").Expect().Status(iris.StatusOK).ContentType("text/html")
 }
