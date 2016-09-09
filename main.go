@@ -23,7 +23,7 @@ func initDB() {
 
 	// Work with a fresh db for added convenience.
 	m.DropDB(Database)
-	m.Index(Database, []string{"_id"})
+	m.Index("trades", []string{"_id"})
 }
 
 // registerMiddle registers middleware handlers with the router.
