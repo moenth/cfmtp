@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"time"
+	"regexp"
 
 	"github.com/simplereach/timeutils"
 	"gopkg.in/mgo.v2/bson"
@@ -24,8 +25,19 @@ type Trade struct {
 // Validate checks the trade for validity.
 func (t Trade) Validate() (valid bool, err error) {
 
+	// No negative IDs here
 	if t.UserID <= 0 {
 		err = errors.New("User ID is not valid")
+	}
+
+	// Accept anything that looks like a currency
+	if match, _ := regexp.MatchString("^[A-Z]{3}$", t.CurrencyFrom); !match {
+		err = errors.New("Currency is not valid: " + t.CurrencyFrom)
+		return
+	}
+	if match, _ := regexp.MatchString("^[A-Z]{3}$", t.CurrencyTo); !match {
+		err = errors.New("Currency is not valid: " + t.CurrencyFrom)
+		return
 	}
 
 	// We only trade in positive amounts
@@ -49,6 +61,12 @@ func (t Trade) Validate() (valid bool, err error) {
 	// Trades from the future are prohibited
 	if t.TimePlaced.Time.After(time.Now()) {
 		err = errors.New("Trade cannot take place in the future")
+		return
+	}
+
+	// Accept anything that looks like a country
+	if match, _ := regexp.MatchString("^[A-Z]{2}$", t.OriginatingCountry); !match {
+		err = errors.New("Originating country is not valid: " + t.OriginatingCountry)
 		return
 	}
 

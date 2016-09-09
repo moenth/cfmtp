@@ -28,13 +28,13 @@ func TestTradeValidation(t *testing.T) {
 	t.Log("Validating invalid trade...")
 	trade = Trade{
 		UserID:             0,
-		CurrencyFrom:       "EUR",
-		CurrencyTo:         "GBP",
+		CurrencyFrom:       "still",
+		CurrencyTo:         "water",
 		AmountSell:         -100,
 		AmountBuy:          -70,
 		Rate:               -0.7,
 		TimePlaced:         timeutils.Time{},
-		OriginatingCountry: "IE",
+		OriginatingCountry: "matt damon",
 	}
 
 	_, err = trade.Validate()
