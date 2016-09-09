@@ -2,13 +2,10 @@ package main
 
 import (
 	"github.com/kataras/iris"
-	"github.com/moenth/cfmtp/db"
-	"github.com/moenth/cfmtp/middleware"
-	"github.com/moenth/cfmtp/trade"
 )
 
 func main() {
-	iris.Config.IsDevelopment = true
+	
 	// Get everything ready
 	initDB()
 	registerMiddleware()
@@ -20,26 +17,26 @@ func main() {
 
 // initDB prepares the database for use.
 func initDB() {
-	m := db.MgoDB{}
+	m := MgoDB{}
 	m.Init()
 	defer m.Close()
 
-	// Work with a fresh db for convenience sake.
-	m.DropDB(db.Database)
-	m.Index(db.Database, []string{"_id"})
+	// Work with a fresh db for added convenience.
+	m.DropDB(Database)
+	m.Index(Database, []string{"_id"})
 }
 
 // registerMiddle registers middleware handlers with the router.
 func registerMiddleware() {
-	iris.Use(middleware.NewRateLimiter())
+	iris.Use(NewRateLimiter())
 }
 
 // registerRoutes registers endpoints with the router.
 func registerRoutes() {
 
 	// Serve a basic frontend.
-	iris.Get("/trades", trade.Index)
+	iris.Get("/trades", TradeIndex)
 
 	// Register the trade api.
-	iris.API("/api/v1/trades", trade.API{})
+	iris.API("/api/v1/trades", TradeAPI{})
 }

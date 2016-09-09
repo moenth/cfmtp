@@ -1,37 +1,36 @@
-package trade
+package main
 
 import (
 	"log"
 
 	"github.com/kataras/iris"
-	"github.com/moenth/cfmtp/db"
 )
 
-// API exposes endpoints for market interactions.
-type API struct {
+// TradeAPI exposes endpoints for market interactions.
+type TradeAPI struct {
 	*iris.Context
 }
 
 // Get lists a number of trades.
 // GET /trades
-func (api API) Get() {
-	db := db.MgoDB{}
-	db.Init()
-	defer db.Close()
+func (api TradeAPI) Get() {
+	m := MgoDB{}
+	m.Init()
+	defer m.Close()
 
-	trades := Repository{&db}
-	recent, err := trades.List(20)
+	var ts []Trade
+	err := m.C("trades").Find(nil).Limit(20).All(&ts)
 	if err != nil {
 		api.JSON(500, err.Error())
 		return
 	}
 
-	api.JSON(200, recent)
+	api.JSON(200, ts)
 }
 
 // Post consumes an incoming trade.
 // POST /trades
-func (api API) Post() {
+func (api TradeAPI) Post() {
 	trade := NewTrade()
 
 	// Read the trade and verify the input is well-formed.
@@ -55,18 +54,18 @@ func (api API) Post() {
 	api.SetStatusCode(201)
 }
 
-// Index renders the trades index page.
-func Index(c *iris.Context) {
-	db := db.MgoDB{}
-	db.Init()
-	defer db.Close()
+// TradeIndex renders the trades index page.
+func TradeIndex(c *iris.Context) {
+	m := MgoDB{}
+	m.Init()
+	defer m.Close()
 
-	r := Repository{&db}
-	trades, _ := r.List(20)
-	total, _ := r.Count()
+	var ts []Trade
+	m.C("trades").Find(nil).Limit(20).All(&ts)
+	tc, _ := m.C("trades").Count()
 
 	c.Render("trades.html", struct {
 		Trades []Trade
 		Total  int
-	}{trades, total})
+	}{ts, tc})
 }

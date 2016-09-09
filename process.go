@@ -1,20 +1,17 @@
-package trade
+package main
 
 import (
 	"log"
-
-	"github.com/moenth/cfmtp/db"
 )
 
 // ProcessTrade processes an incoming trade.
 func ProcessTrade(t Trade) {
-	db := db.MgoDB{}
-	db.Init()
-	defer db.Close()
+	m := MgoDB{}
+	m.Init()
+	defer m.Close()
 
 	// Store the trade in the database
-	trades := Repository{&db}
-	err := trades.Store(t)
+	_, err := m.C("trades").UpsertId(t.ID, t)
 	if err != nil {
 		log.Println(err.Error())
 		return

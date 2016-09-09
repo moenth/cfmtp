@@ -1,8 +1,9 @@
-package db
+package main
 
 import (
-	"gopkg.in/mgo.v2"
 	"log"
+
+	"gopkg.in/mgo.v2"
 )
 
 // Connection details
@@ -49,8 +50,8 @@ func (m *MgoDB) Init() *mgo.Session {
 
 // C returns a value representing the named collection.
 func (m *MgoDB) C(name string) *mgo.Collection {
-    m.Col = m.DB.C(name)
-    return m.Col
+	m.Col = m.DB.C(name)
+	return m.Col
 }
 
 // DropDB drops the specified database.
@@ -64,9 +65,9 @@ func (m *MgoDB) DropDB(name string) {
 // Index ensures keys on the given collection are indexed.
 func (m *MgoDB) Index(collection string, keys []string) {
 	index := mgo.Index{
-		Key: keys,
-		Unique: true,
-		DropDups: true,
+		Key:        keys,
+		Unique:     true,
+		DropDups:   true,
 		Background: true,
 	}
 
