@@ -10,7 +10,7 @@ func TestProcessTrade(t *testing.T) {
 	t.Log("Processing trade...")
 	m := MgoDB{}
 	m.Init()
-	m.DropDB(Database)
+	m.C("trades").DropCollection()
 	defer m.Close()
 
 	// Surpress log output
@@ -23,4 +23,6 @@ func TestProcessTrade(t *testing.T) {
 	if count != 1 {
 		t.Fatalf("Expected count of 1, got %d", count)
 	}
+
+	m.C("trades").DropCollection()
 }
